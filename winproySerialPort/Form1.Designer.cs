@@ -42,7 +42,7 @@
             this.grpParametros = new System.Windows.Forms.GroupBox();
             this.btnCerrarPuerto = new System.Windows.Forms.Button();
             this.btnEnviarArchivo = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBuildFile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
             this.grpParametros.SuspendLayout();
@@ -218,22 +218,22 @@
             this.btnEnviarArchivo.UseVisualStyleBackColor = true;
             this.btnEnviarArchivo.Click += new System.EventHandler(this.btnEnviarArchivo_Click);
             // 
-            // button1
+            // btnBuildFile
             // 
-            this.button1.Location = new System.Drawing.Point(269, 211);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnBuildFile.Location = new System.Drawing.Point(201, 165);
+            this.btnBuildFile.Name = "btnBuildFile";
+            this.btnBuildFile.Size = new System.Drawing.Size(130, 23);
+            this.btnBuildFile.TabIndex = 14;
+            this.btnBuildFile.Text = "Construir Archivo";
+            this.btnBuildFile.UseVisualStyleBackColor = true;
+            this.btnBuildFile.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(763, 341);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnBuildFile);
             this.Controls.Add(this.btnEnviarArchivo);
             this.Controls.Add(this.btnCerrarPuerto);
             this.Controls.Add(this.grpParametros);
@@ -271,7 +271,7 @@
         private System.Windows.Forms.GroupBox grpParametros;
         private System.Windows.Forms.Button btnCerrarPuerto;
         private System.Windows.Forms.Button btnEnviarArchivo;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBuildFile;
     }
 }
 

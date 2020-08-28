@@ -99,7 +99,8 @@ namespace winproySerialPort
         private void button1_Click(object sender, EventArgs e)
         {
             objTrRX.InicioConstruirArchivo("D:\\prueba\\archivo2.pdf");//Ver si añadir los parametros aqui(creo q nel)
-            
+            MessageBox.Show("Archivo 2 construido, listo para recibir");
+
         }
     }
 }

@@ -93,9 +93,9 @@ namespace winproySerialPort
                          * 
                          */
                     case "A":
-                        /*procesoConstruyeArchivo = new Thread(ConstruirArchivo);
-                        procesoConstruyeArchivo.Start();*/
-                        ConstruirArchivo();
+                        procesoConstruyeArchivo = new Thread(ConstruirArchivo);
+                        procesoConstruyeArchivo.Start();
+                        //ConstruirArchivo();//Comentar? YES
                         break;
                     case "I":
                         break;
@@ -222,7 +222,7 @@ namespace winproySerialPort
             EscribiendoArchivo = new BinaryWriter(FlujoArchivoRecibir);
             archivoRecibir.Nombre = nombre;
             archivoRecibir.Num = 1;
-            archivoRecibir.Tamaño = 135671;
+            archivoRecibir.Tamaño = 135671;//Obviamente obtener tamaño
             archivoRecibir.Avance = 0;
         }
         private void ConstruirArchivo()
@@ -239,7 +239,7 @@ namespace winproySerialPort
                 EscribiendoArchivo.Write(TramaRecibida,5,tamanito);
                 EscribiendoArchivo.Close();
                 FlujoArchivoRecibir.Close();
-                
+                MessageBox.Show("Archivo cerrado");
             }
             //Debe actualizarse el tamaño de la recepción en archivoRecibir
         }
