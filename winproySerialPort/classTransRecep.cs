@@ -18,23 +18,23 @@ namespace winproySerialPort
 
         public delegate void HandlerTxRx(object oo, string mensRec);
         public event HandlerTxRx LlegoMensaje;
-        //Nuevo
+        //Delegado para envío archivo
+        public delegate void HandlerProceso(long tam, long avance);
+        public event HandlerProceso proceso;
+        //archivoEnviar
         private ClassArchivoEnviando archivoEnviar;
         private FileStream FlujoArchivoEnviar;
         private BinaryReader LeyendoArchivo;
-        //
-        //Nuevo 2
+        //archivoRecibir
         private ClassArchivoEnviando archivoRecibir;
         private FileStream FlujoArchivoRecibir;
         private BinaryWriter EscribiendoArchivo;
-        //
         Thread procesoEnvio;
         Thread procesoVerificaSalida;
         Thread procesoRecibirMensaje;
-        //Nuevo
+        //Proceso envío y
         Thread procesoEnvioArchivo;
         Thread procesoConstruyeArchivo;
-        //
         private SerialPort puerto;
         //Enviar
         private string mensajeEnviar;
@@ -127,7 +127,17 @@ namespace winproySerialPort
             {
                 LlegoMensaje(this, mensRecibido);//El metodo no está aquí F
             }
-                
+        }
+        protected virtual void OnProcesoEnvio()
+        {
+            if (proceso != null)
+            {
+                proceso(archivoEnviar.Tamaño,archivoEnviar.Avance);//El metodo no está aquí F
+            }
+        }
+        protected virtual void owo()
+        {
+
         }
         public void Enviar(string mens)
         {
@@ -238,6 +248,7 @@ namespace winproySerialPort
                 puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
                 puerto.Write(TramaEnvioArchivo, 0, 1019);
                 }
+                OnProcesoEnvio();
             }
             int tamanito = Convert.ToInt16(archivoEnviar.Tamaño - archivoEnviar.Avance);
             LeyendoArchivo.Read(TramaEnvioArchivo, 0, tamanito);
@@ -256,7 +267,8 @@ namespace winproySerialPort
             archivoEnviar.Activo = false;
             LeyendoArchivo.Close();
             FlujoArchivoEnviar.Close();
-            
+            OnProcesoEnvio();
+            MessageBox.Show("Archivo Enviado");
         }
         private void InicioConstruirArchivo()//faltan parametros del archivo //Deberia ser privado
         {

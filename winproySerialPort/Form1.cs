@@ -20,6 +20,9 @@ namespace winproySerialPort
         classTransRecep objTrRX;
         delegate void MostrarOtroProceso(string mensaje);
         MostrarOtroProceso delegadoMostrar;
+        //Delegado proceso Envío
+        delegate void MostrarEnvio(long x, long y);
+        MostrarEnvio delegadoEnvio;
         int baudrate;
         string x;
         Thread envioarchivo;
@@ -42,12 +45,26 @@ namespace winproySerialPort
             btnEnviar.Enabled = false;
             objTrRX = new classTransRecep();
             objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(objTrRx_LlegoMensaje);//Se adiciona el delegado
+            objTrRX.proceso += new classTransRecep.HandlerProceso(objTrRX_proceso);
             delegadoMostrar = new MostrarOtroProceso(MostrandoMensaje);
+            delegadoEnvio = new MostrarEnvio(MostrandoProceso);
         }
+
+        private void MostrandoProceso(long x, long y)
+        {
+            prgEnvio.Maximum = (int)x;
+            prgEnvio.Value = (int)y;
+        }
+
+        private void objTrRX_proceso(long tam, long avance)
+        {
+            Invoke(delegadoEnvio, tam, avance);
+        }
+
         /*
         private void btnRecibir_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("faltan por salir a enviar: " + objTrRX.BytesPorSalir().ToString());
+           MessageBox.Show("faltan por salir a enviar: " + objTrRX.BytesPorSalir().ToString());
         }
         */
         //Este metodo se desencadena cuando se dispare el evento LlegoMensaje
