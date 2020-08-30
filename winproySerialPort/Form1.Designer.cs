@@ -29,20 +29,19 @@
         private void InitializeComponent()
         {
             this.btnEnviar = new System.Windows.Forms.Button();
-            this.rchMensajes = new System.Windows.Forms.RichTextBox();
             this.rchConversacion = new System.Windows.Forms.RichTextBox();
-            this.btnRecibir = new System.Windows.Forms.Button();
             this.cbmPuerto = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rchMensajes = new System.Windows.Forms.RichTextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.prgEnvio = new System.Windows.Forms.ProgressBar();
             this.nudBaudRate = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.grpParametros = new System.Windows.Forms.GroupBox();
             this.btnCerrarPuerto = new System.Windows.Forms.Button();
-            this.btnEnviarArchivo = new System.Windows.Forms.Button();
-            this.btnBuildFile = new System.Windows.Forms.Button();
+            this.ofdOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.btnSelectFile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
             this.grpParametros.SuspendLayout();
@@ -51,7 +50,7 @@
             // btnEnviar
             // 
             this.btnEnviar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEnviar.Location = new System.Drawing.Point(83, 257);
+            this.btnEnviar.Location = new System.Drawing.Point(99, 201);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(158, 32);
             this.btnEnviar.TabIndex = 0;
@@ -59,32 +58,15 @@
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
             // 
-            // rchMensajes
-            // 
-            this.rchMensajes.Location = new System.Drawing.Point(9, 216);
-            this.rchMensajes.Name = "rchMensajes";
-            this.rchMensajes.Size = new System.Drawing.Size(365, 98);
-            this.rchMensajes.TabIndex = 1;
-            this.rchMensajes.Text = "";
-            // 
             // rchConversacion
             // 
             this.rchConversacion.Location = new System.Drawing.Point(9, 19);
             this.rchConversacion.Name = "rchConversacion";
+            this.rchConversacion.ReadOnly = true;
             this.rchConversacion.Size = new System.Drawing.Size(365, 191);
             this.rchConversacion.TabIndex = 2;
             this.rchConversacion.Text = "";
-            // 
-            // btnRecibir
-            // 
-            this.btnRecibir.Location = new System.Drawing.Point(422, 401);
-            this.btnRecibir.Name = "btnRecibir";
-            this.btnRecibir.Size = new System.Drawing.Size(146, 23);
-            this.btnRecibir.TabIndex = 3;
-            this.btnRecibir.Text = "RECIBIR MENSAJE";
-            this.btnRecibir.UseVisualStyleBackColor = true;
-            this.btnRecibir.Visible = false;
-            this.btnRecibir.Click += new System.EventHandler(this.btnRecibir_Click);
+            this.rchConversacion.TextChanged += new System.EventHandler(this.rchConversacion_TextChanged);
             // 
             // cbmPuerto
             // 
@@ -117,14 +99,22 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.rchConversacion);
             this.groupBox1.Controls.Add(this.rchMensajes);
-            this.groupBox1.Location = new System.Drawing.Point(373, 12);
+            this.groupBox1.Controls.Add(this.rchConversacion);
+            this.groupBox1.Location = new System.Drawing.Point(372, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(381, 320);
+            this.groupBox1.Size = new System.Drawing.Size(385, 315);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Chat";
+            // 
+            // rchMensajes
+            // 
+            this.rchMensajes.Location = new System.Drawing.Point(9, 216);
+            this.rchMensajes.Name = "rchMensajes";
+            this.rchMensajes.Size = new System.Drawing.Size(365, 93);
+            this.rchMensajes.TabIndex = 1;
+            this.rchMensajes.Text = "";
             // 
             // label4
             // 
@@ -138,10 +128,10 @@
             // 
             // prgEnvio
             // 
-            this.prgEnvio.Location = new System.Drawing.Point(57, 401);
+            this.prgEnvio.Location = new System.Drawing.Point(63, 277);
             this.prgEnvio.Maximum = 1024;
             this.prgEnvio.Name = "prgEnvio";
-            this.prgEnvio.Size = new System.Drawing.Size(238, 23);
+            this.prgEnvio.Size = new System.Drawing.Size(238, 28);
             this.prgEnvio.Step = 1;
             this.prgEnvio.TabIndex = 10;
             // 
@@ -199,7 +189,7 @@
             // 
             this.btnCerrarPuerto.Enabled = false;
             this.btnCerrarPuerto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCerrarPuerto.Location = new System.Drawing.Point(83, 220);
+            this.btnCerrarPuerto.Location = new System.Drawing.Point(99, 164);
             this.btnCerrarPuerto.Name = "btnCerrarPuerto";
             this.btnCerrarPuerto.Size = new System.Drawing.Size(158, 31);
             this.btnCerrarPuerto.TabIndex = 12;
@@ -207,46 +197,36 @@
             this.btnCerrarPuerto.UseVisualStyleBackColor = true;
             this.btnCerrarPuerto.Click += new System.EventHandler(this.btmCerrarPuerto_Click);
             // 
-            // btnEnviarArchivo
+            // btnSelectFile
             // 
-            this.btnEnviarArchivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEnviarArchivo.Location = new System.Drawing.Point(83, 295);
-            this.btnEnviarArchivo.Name = "btnEnviarArchivo";
-            this.btnEnviarArchivo.Size = new System.Drawing.Size(158, 32);
-            this.btnEnviarArchivo.TabIndex = 13;
-            this.btnEnviarArchivo.Text = "ENVIAR ARCHIVO";
-            this.btnEnviarArchivo.UseVisualStyleBackColor = true;
-            this.btnEnviarArchivo.Click += new System.EventHandler(this.btnEnviarArchivo_Click);
-            // 
-            // btnBuildFile
-            // 
-            this.btnBuildFile.Location = new System.Drawing.Point(201, 165);
-            this.btnBuildFile.Name = "btnBuildFile";
-            this.btnBuildFile.Size = new System.Drawing.Size(130, 23);
-            this.btnBuildFile.TabIndex = 14;
-            this.btnBuildFile.Text = "Construir Archivo";
-            this.btnBuildFile.UseVisualStyleBackColor = true;
-            this.btnBuildFile.Click += new System.EventHandler(this.button1_Click);
+            this.btnSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelectFile.Location = new System.Drawing.Point(99, 240);
+            this.btnSelectFile.Name = "btnSelectFile";
+            this.btnSelectFile.Size = new System.Drawing.Size(158, 31);
+            this.btnSelectFile.TabIndex = 15;
+            this.btnSelectFile.Text = "Seleccionar Archivo";
+            this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
             // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(763, 341);
-            this.Controls.Add(this.btnBuildFile);
-            this.Controls.Add(this.btnEnviarArchivo);
+            this.ClientSize = new System.Drawing.Size(774, 338);
+            this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.btnCerrarPuerto);
             this.Controls.Add(this.grpParametros);
             this.Controls.Add(this.prgEnvio);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnRecibir);
             this.Controls.Add(this.btnEnviar);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form Delgado Rodríguez Luis Guillermo";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).EndInit();
             this.grpParametros.ResumeLayout(false);
@@ -258,9 +238,7 @@
 
         #endregion
         private System.Windows.Forms.Button btnEnviar;
-        private System.Windows.Forms.RichTextBox rchMensajes;
         private System.Windows.Forms.RichTextBox rchConversacion;
-        private System.Windows.Forms.Button btnRecibir;
         private System.Windows.Forms.ComboBox cbmPuerto;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -270,8 +248,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox grpParametros;
         private System.Windows.Forms.Button btnCerrarPuerto;
-        private System.Windows.Forms.Button btnEnviarArchivo;
-        private System.Windows.Forms.Button btnBuildFile;
+        private System.Windows.Forms.OpenFileDialog ofdOpenFile;
+        private System.Windows.Forms.Button btnSelectFile;
+        private System.Windows.Forms.RichTextBox rchMensajes;
     }
 }
 

@@ -12,5 +12,9 @@ namespace winproySerialPort
         public long Tamaño { get; set; }
         public int Avance { get; set; }
         public int Num { get; set; }
+        public string Ruta { get; set; }
+        public Boolean Activo { get; set; }
+        public string TipoArchivo { get; set; }//Para la presentación
+        //Mantener a los stream
     }
 }
