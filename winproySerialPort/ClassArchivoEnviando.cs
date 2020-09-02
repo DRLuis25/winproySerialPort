@@ -10,7 +10,7 @@ namespace winproySerialPort
     {
         public string Nombre { get; set; }
         public long Tamaño { get; set; }
-        public int Avance { get; set; }
+        public long Avance { get; set; }
         public int Num { get; set; }
         public string Ruta { get; set; }
         public Boolean Activo { get; set; }

@@ -45,7 +45,7 @@ namespace winproySerialPort
         //Envío trama
         byte[] TramaEnvio;
         byte[] TramaCabeceraEnvio;
-        byte[] TramaRelleno;
+        readonly byte[] TramaRelleno;
         //Recibir
         byte[] TramaRecibida;
         public classTransRecep()
@@ -145,7 +145,6 @@ namespace winproySerialPort
             puerto.Write(TramaCabeceraEnvio, 0, 5);
             puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
             puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);
-            //MessageBox.Show("mensaje terminado de enviar");
             }
         }
         private void VerificandoSalida()
@@ -199,10 +198,10 @@ namespace winproySerialPort
             string cabeceraArchivo = "C" + archivoEnviar.Nombre.Length.ToString("D4");
             TramaCabeceraEnvioArchivo = ASCIIEncoding.UTF8.GetBytes(cabeceraArchivo);
             TramaEnvioArchivo = ASCIIEncoding.UTF8.GetBytes(archivoEnviar.Nombre + archivoEnviar.Tamaño.ToString("D19"));
-            while (!BufferSalidaVacio)
-            {
-                //Esperamos a que se envie 
-            }
+            //while (!BufferSalidaVacio)
+            //{
+            //    //Esperamos a que se envie 
+            //}
             lock (control)
             {
                 puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
@@ -234,10 +233,10 @@ namespace winproySerialPort
             int tamanito = Convert.ToInt16(archivoEnviar.Tamaño - archivoEnviar.Avance);
             LeyendoArchivo.Read(TramaEnvioArchivo, 0, tamanito);
             //Envío de lo que queda del archivo + un relleno
-            while (!BufferSalidaVacio)
-            {
-                //Esperamos a que se envie 
-            }
+            //while (!BufferSalidaVacio)
+            //{
+            //    //Esperamos a que se envie 
+            //}
             lock (control)
             {
                 puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
@@ -245,6 +244,7 @@ namespace winproySerialPort
                 puerto.Write(TramaRelleno, 0, 1019 - tamanito);
             }
             //Cerrar el flujo
+            archivoEnviar.Avance = archivoEnviar.Tamaño;
             archivoEnviar.Activo = false;
             LeyendoArchivo.Close();
             FlujoArchivoEnviar.Close();

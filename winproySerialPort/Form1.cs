@@ -25,27 +25,26 @@ namespace winproySerialPort
         MostrarEnvio delegadoEnvio;
         int baudrate;
         string x;
-        Thread envioarchivo;
         public Form1()
         {
             InitializeComponent();
         }
-        private void btnEnviar_Click(object sender, EventArgs e)
+        private void BtnEnviar_Click(object sender, EventArgs e)
         {
-            objTrRX.Enviar(rchMensajes.Text.Trim());
-            rchConversacion.Text += "Tú: " + rchMensajes.Text.Trim() + "\n";
-            rchMensajes.Text = "";
+            string msje = rchMensajes.Text.Trim();
+            if(msje!="" && msje.Length<=1019)
+            {
+                objTrRX.Enviar(msje);
+                rchConversacion.Text += "Tú: " + rchMensajes.Text.Trim() + "\n";
+                rchMensajes.Text = "";
+            }
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            //MessageBox.Show(ConfigurationManager.AppSettings["Path"]);
             RutaDescarga();
-            //MessageBox.Show(ConfigurationManager.AppSettings["Path"]);
-            btnEnviar.Enabled = false;
             objTrRX = new classTransRecep();
-            objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(objTrRx_LlegoMensaje);//Se adiciona el delegado
-            objTrRX.Proceso += new classTransRecep.HandlerProceso(objTrRX_proceso);
+            objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(ObjTrRx_LlegoMensaje);//Se adiciona el delegado
+            objTrRX.Proceso += new classTransRecep.HandlerProceso(ObjTrRX_proceso);
             delegadoMostrar = new MostrarOtroProceso(MostrandoMensaje);
             delegadoEnvio = new MostrarEnvio(MostrandoProceso);
         }
@@ -54,21 +53,20 @@ namespace winproySerialPort
         {
             prgEnvio.Maximum = (int)x;
             prgEnvio.Value = (int)y;
+            if (x == y)
+            {
+                btnCerrarPuerto.Enabled = true;
+                prgEnvio.Value = 0;
+            }
+                
         }
 
-        private void objTrRX_proceso(long tam, long avance)
+        private void ObjTrRX_proceso(long tam, long avance)
         {
             Invoke(delegadoEnvio, tam, avance);
         }
-
-        /*
-        private void btnRecibir_Click(object sender, EventArgs e)
-        {
-           MessageBox.Show("faltan por salir a enviar: " + objTrRX.BytesPorSalir().ToString());
-        }
-        */
         //Este metodo se desencadena cuando se dispare el evento LlegoMensaje
-        private void objTrRx_LlegoMensaje(object o, string mm)
+        private void ObjTrRx_LlegoMensaje(object o, string mm)
         {
             //MessageBox.Show("Se disparó: "+mm);
             Invoke(delegadoMostrar, mm);
@@ -78,7 +76,7 @@ namespace winproySerialPort
             rchConversacion.Text += "Otro: " + textMens + "\n";
         }
 
-        private void cbmPuerto_SelectedIndexChanged(object sender, EventArgs e)
+        private void CbmPuerto_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbmPuerto.SelectedIndex == -1)//No queria :c
                 return;
@@ -94,65 +92,57 @@ namespace winproySerialPort
                 MessageBox.Show("Error al abrir puerto, " +ex.Message);
                 cbmPuerto.SelectedIndex = -1;
                 btnEnviar.Enabled = false;
+                btnSelectFile.Enabled = false;
                 return;
             }
             MessageBox.Show("Puerto " + x + " abierto");
             btnCerrarPuerto.Text = "CERRAR PUERTO " + x;
-            btnCerrarPuerto.Enabled = true;
-            btnEnviar.Enabled = true;
-            grpParametros.Enabled = false;//Así no deshabilito uno por uno xD
+            CambiarEstado(true);
         }
-
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Environment.Exit(Environment.ExitCode);
             objTrRX.CerrarPuerto();
         }
-
-        private void btmCerrarPuerto_Click(object sender, EventArgs e)
+        private void BtnCerrarPuerto_Click(object sender, EventArgs e)
         {
             objTrRX.CerrarPuerto();
             btnCerrarPuerto.Text = "CERRAR PUERTO";
             cbmPuerto.SelectedIndex = -1;
-            btnEnviar.Enabled = false;
-            btnCerrarPuerto.Enabled = false;
-            grpParametros.Enabled = true;
+            CambiarEstado(false);
         }
-
-        private void btnSelectFile_Click(object sender, EventArgs e)
+        private void CambiarEstado(bool estado)
+        {
+            btnEnviar.Enabled = estado;
+            btnCerrarPuerto.Enabled = estado;
+            btnSelectFile.Enabled = estado;
+            grpParametros.Enabled = !estado;
+        }
+        private void BtnSelectFile_Click(object sender, EventArgs e)
         {
             if (ofdOpenFile.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Archivo Seleccionado");
-                //label3.Text=ofdOpenFile.FileName;//Ruta completa
-                MessageBox.Show(Path.GetFileName(ofdOpenFile.FileName));//Nombre archivo
                 objTrRX.IniciaEnvioArchivo(ofdOpenFile.FileName);
-                MessageBox.Show("Se empezó a enviar");
-                envioarchivo = new Thread(Progreso);
-                envioarchivo.Start();
+                MessageBox.Show("Enviando Archivo");
+                btnCerrarPuerto.Enabled = false;
             }
         }
-        private void Progreso()
+        private void RchConversacion_TextChanged(object sender, EventArgs e)
         {
-            //while()
+            rchConversacion.SelectionStart = rchConversacion.Text.Length;
+            rchConversacion.ScrollToCaret();
         }
-        private void Form1_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.All;
-        }
-
         private void RutaDescarga()
         {
-            string path = ConfigurationManager.AppSettings["Path"];     
-            if(path=="")
+            string path = ConfigurationManager.AppSettings["Path"];
+            if (path == "")
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-                foreach(XmlElement element in xmlDoc.DocumentElement)
+                foreach (XmlElement element in xmlDoc.DocumentElement)
                 {
                     if (element.Name.Equals("appSettings"))
                     {
-                        foreach(XmlNode node in element.ChildNodes)
+                        foreach (XmlNode node in element.ChildNodes)
                         {
                             if (node.Attributes[0].Value == "Path")
                                 node.Attributes[1].Value = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -164,11 +154,15 @@ namespace winproySerialPort
             }
 
         }
-
-        private void rchConversacion_TextChanged(object sender, EventArgs e)
+        private void Form1_DragEnter(object sender, DragEventArgs e)
         {
-            rchConversacion.SelectionStart = rchConversacion.Text.Length;
-            rchConversacion.ScrollToCaret();
+            e.Effect = DragDropEffects.All;
+        }//Para el final
+
+        private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            objTrRX.CerrarPuerto();
+            Application.Exit();
         }
     }
 }
