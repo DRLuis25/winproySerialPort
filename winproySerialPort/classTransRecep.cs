@@ -200,8 +200,7 @@ namespace winproySerialPort
             }
             catch (Exception e)
             {
-                MessageBox.Show("ERROR!: " + e.Message);
-                throw;
+                throw e;
             }
         }
         private void EnviarCabecera()
@@ -269,7 +268,7 @@ namespace winproySerialPort
             {
                 //Crea un archivo en el disco
                 string filepath = Path.Combine(ConfigurationManager.AppSettings["Path"], nombreArchivo);
-                //filepath = ChangeFileName(filepath);
+                filepath = ChangeFileName(filepath);
                 FlujoArchivoRecibir = new FileStream(filepath, FileMode.CreateNew, FileAccess.Write);//Manejar excepcion
                 EscribiendoArchivo = new BinaryWriter(FlujoArchivoRecibir);
                 archivoRecibir.Nombre = nombreArchivo;

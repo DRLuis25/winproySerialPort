@@ -121,9 +121,17 @@ namespace winproySerialPort
         {
             if (ofdOpenFile.ShowDialog() == DialogResult.OK)
             {
-                objTrRX.IniciaEnvioArchivo(ofdOpenFile.FileName);
-                MessageBox.Show("Enviando Archivo");
-                btnCerrarPuerto.Enabled = false;
+                try
+                {
+                    objTrRX.IniciaEnvioArchivo(ofdOpenFile.FileName);
+                    MessageBox.Show("Enviando Archivo");
+                    btnCerrarPuerto.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al enviar el archivo: " + ex.Message);
+                    return;
+                }
             }
         }
         private void RchConversacion_TextChanged(object sender, EventArgs e)
