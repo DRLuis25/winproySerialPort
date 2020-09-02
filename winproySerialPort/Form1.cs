@@ -38,14 +38,14 @@ namespace winproySerialPort
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {    
+        {
             //MessageBox.Show(ConfigurationManager.AppSettings["Path"]);
             RutaDescarga();
             //MessageBox.Show(ConfigurationManager.AppSettings["Path"]);
             btnEnviar.Enabled = false;
             objTrRX = new classTransRecep();
             objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(objTrRx_LlegoMensaje);//Se adiciona el delegado
-            objTrRX.proceso += new classTransRecep.HandlerProceso(objTrRX_proceso);
+            objTrRX.Proceso += new classTransRecep.HandlerProceso(objTrRX_proceso);
             delegadoMostrar = new MostrarOtroProceso(MostrandoMensaje);
             delegadoEnvio = new MostrarEnvio(MostrandoProceso);
         }
