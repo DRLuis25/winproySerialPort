@@ -41,6 +41,10 @@ namespace winproySerialPort
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            //if (Path.IsPathRooted("F"))
+            //    MessageBox.Show("yey");
+            //else
+            //    MessageBox.Show("no :c");
             RutaDescarga();
             objTrRX = new classTransRecep();
             objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(ObjTrRx_LlegoMensaje);//Se adiciona el delegado
@@ -63,7 +67,15 @@ namespace winproySerialPort
 
         private void ObjTrRX_proceso(long tam, long avance)
         {
-            Invoke(delegadoEnvio, tam, avance);
+            try
+            {
+                Invoke(delegadoEnvio, tam, avance);
+            }
+            catch (Exception e)
+            {
+                return;
+                //throw;
+            }
         }
         //Este metodo se desencadena cuando se dispare el evento LlegoMensaje
         private void ObjTrRx_LlegoMensaje(object o, string mm)
@@ -171,6 +183,11 @@ namespace winproySerialPort
         {
             objTrRX.CerrarPuerto();
             Application.Exit();
+        }
+
+        private void descargasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
