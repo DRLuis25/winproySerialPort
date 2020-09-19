@@ -17,7 +17,7 @@ namespace winproySerialPort
 {
     public partial class Form1 : Form
     {
-        classTransRecep objTrRX;
+        ClassTransRecep objTrRX;
         delegate void MostrarOtroProceso(string mensaje);
         MostrarOtroProceso delegadoMostrar;
         //Delegado proceso Envío
@@ -46,9 +46,9 @@ namespace winproySerialPort
             //else
             //    MessageBox.Show("no :c");
             RutaDescarga();
-            objTrRX = new classTransRecep();
-            objTrRX.LlegoMensaje += new classTransRecep.HandlerTxRx(ObjTrRx_LlegoMensaje);//Se adiciona el delegado
-            objTrRX.Proceso += new classTransRecep.HandlerProceso(ObjTrRX_proceso);
+            objTrRX = new ClassTransRecep();
+            objTrRX.LlegoMensaje += new ClassTransRecep.HandlerTxRx(ObjTrRx_LlegoMensaje);//Se adiciona el delegado
+            objTrRX.Proceso += new ClassTransRecep.HandlerProceso(ObjTrRX_proceso);
             delegadoMostrar = new MostrarOtroProceso(MostrandoMensaje);
             delegadoEnvio = new MostrarEnvio(MostrandoProceso);
         }

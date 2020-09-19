@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassArchivoEnviando.cs" />
-    <Compile Include="classTransRecep.cs" />
+    <Compile Include="ClassTransRecep.cs" />
+    <Compile Include="ClassTransRecepFile.cs" />
+    <Compile Include="ClassTransRecepMessage.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

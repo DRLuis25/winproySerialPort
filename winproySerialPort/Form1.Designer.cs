@@ -342,10 +342,11 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 27);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(842, 423);
+            this.tabControl1.Size = new System.Drawing.Size(866, 464);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage1
@@ -358,7 +359,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(834, 397);
+            this.tabPage1.Size = new System.Drawing.Size(858, 438);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Chat";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -369,7 +370,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(834, 397);
+            this.tabPage2.Size = new System.Drawing.Size(858, 438);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Transferencias";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -626,9 +627,9 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(35, 17);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(82, 13);
+            this.label18.Size = new System.Drawing.Size(89, 13);
             this.label18.TabIndex = 14;
-            this.label18.Text = "DESCARGADO";
+            this.label18.Text = "DESCARGADOS";
             // 
             // panel3
             // 
