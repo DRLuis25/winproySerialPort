@@ -17,14 +17,18 @@ namespace winproySerialPort
 {
     public partial class Form1 : Form
     {
+        private static readonly object control = new object();
         ClassTransRecep objTrRX;
         delegate void MostrarOtroProceso(string mensaje);
         MostrarOtroProceso delegadoMostrar;
         //Delegado proceso Envío
-        delegate void MostrarEnvio(long x, long y);
+        delegate void MostrarEnvio(long tam, long avance, int num);
         MostrarEnvio delegadoEnvio;
+        delegate void MostrarInicioEnvio(int num, string nombreArchivo);
+        MostrarInicioEnvio delegadoInicioEnvio;
         int baudrate;
         string x;
+        private int y;
         public Form1()
         {
             InitializeComponent();
@@ -49,38 +53,100 @@ namespace winproySerialPort
             objTrRX = new ClassTransRecep();
             objTrRX.LlegoMensaje += new ClassTransRecep.HandlerTxRx(ObjTrRx_LlegoMensaje);//Se adiciona el delegado
             objTrRX.Proceso += new ClassTransRecep.HandlerProceso(ObjTrRX_proceso);
+            objTrRX.InicioProceso += new ClassTransRecep.HandlerInicioProceso(ObjTrRX_InicioProceso);
             delegadoMostrar = new MostrarOtroProceso(MostrandoMensaje);
             delegadoEnvio = new MostrarEnvio(MostrandoProceso);
+            delegadoInicioEnvio = new MostrarInicioEnvio(MostrandoInicioProceso);
+            y = 3;
         }
-
-        private void MostrandoProceso(long x, long y)
+        private void MostrandoProceso(long tam, long avance, int num)
         {
-            prgEnvio.Maximum = (int)x;
-            prgEnvio.Value = (int)y;
-            if (x == y)
+            lock (control)
             {
-                btnCerrarPuerto.Enabled = true;
-                prgEnvio.Value = 0;
+                GroupBox group = flpEnviando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num.ToString("D4")));
+                //Label etiqueta = group.Controls.OfType<Label>().FirstOrDefault(b => b.Name.Equals("lblArchivoN" + num.ToString("D4")));
+                ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num.ToString("D4")));
+                //Label button = groupBox1.Controls.OfType<Button>().FirstOrDefault(b => b.Name.Equals("btn"));
+                //etiqueta.Text = "Changed...";
+                proceso.Maximum = (int)tam;
+                proceso.Value = (int)avance;
+                //VIEJO
+                //prgEnvio.Maximum = (int)x;
+                //prgEnvio.Value = (int)y;
+                //if (x == y)
+                //{
+                //    btnCerrarPuerto.Enabled = true;
+                //    prgEnvio.Value = 0;
+                //}
             }
-                
         }
-
-        private void ObjTrRX_proceso(long tam, long avance)
+        private void MostrandoInicioProceso(int num, string nombreArchivo)
         {
-            try
+            lock (control)
             {
-                Invoke(delegadoEnvio, tam, avance);
-            }
-            catch (Exception e)
-            {
-                return;
-                //throw;
+                GroupBox insertar = ArchivoNuevo(num, nombreArchivo);
+                flpEnviando.Controls.Add(insertar);
             }
         }
-        //Este metodo se desencadena cuando se dispare el evento LlegoMensaje
+        private GroupBox ArchivoNuevo(int num, string nombreArchivo)
+        {
+            GroupBox grpArchivoN = new GroupBox();
+            Button btnCerrarArchivoN = new Button();
+            ProgressBar prgArchivoN = new ProgressBar();
+            Label lblArchivoN = new Label();
+            // 
+            // lblArchivoN
+            // 
+            lblArchivoN.AutoSize = true;
+            lblArchivoN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblArchivoN.Location = new System.Drawing.Point(30, 30);
+            lblArchivoN.Name = "lblArchivoN" + num.ToString("D4");
+            lblArchivoN.Size = new System.Drawing.Size(146, 20);
+            lblArchivoN.TabIndex = 0;
+            lblArchivoN.Text = nombreArchivo.Length>15? nombreArchivo.Substring(0, 12)+"...":nombreArchivo;
+            // 
+            // prgArchivoN
+            // 
+            prgArchivoN.Location = new System.Drawing.Point(220, 25);
+            prgArchivoN.Name = "prgArchivoN" + num.ToString("D4");
+            prgArchivoN.Size = new System.Drawing.Size(300, 30);
+            prgArchivoN.TabIndex = 1;
+            // 
+            // btnCerrarArchivoN
+            // 
+            btnCerrarArchivoN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            btnCerrarArchivoN.Location = new System.Drawing.Point(630, 25);
+            btnCerrarArchivoN.Name = "btnCerrarArchivoN" + num.ToString("D4");
+            btnCerrarArchivoN.Size = new System.Drawing.Size(30, 30);
+            btnCerrarArchivoN.TabIndex = 2;
+            btnCerrarArchivoN.Text = "X";
+            btnCerrarArchivoN.UseVisualStyleBackColor = true;
+            // 
+            // grpArchivoN
+            // 
+            grpArchivoN.Controls.Add(btnCerrarArchivoN);
+            grpArchivoN.Controls.Add(prgArchivoN);
+            grpArchivoN.Controls.Add(lblArchivoN);
+            grpArchivoN.Location = new System.Drawing.Point(y, 3);
+            y += 86;
+            grpArchivoN.Name = "grpArchivoN" + num.ToString("D4");
+            grpArchivoN.Size = new System.Drawing.Size(694, 80);
+            grpArchivoN.TabIndex = 0;
+            grpArchivoN.TabStop = false;
+            return grpArchivoN;
+        }
+        private void ObjTrRX_InicioProceso(int num, string nombreArchivo)
+        {
+            Invoke(delegadoInicioEnvio, num, nombreArchivo);
+        }
+        private void ObjTrRX_proceso(long tam, long avance, int num)
+        {
+            
+            Invoke(delegadoEnvio, tam, avance, num);
+        }
+        
         private void ObjTrRx_LlegoMensaje(object o, string mm)
         {
-            //MessageBox.Show("Se disparó: "+mm);
             Invoke(delegadoMostrar, mm);
         }
         private void MostrandoMensaje(string textMens)
@@ -138,6 +204,7 @@ namespace winproySerialPort
                     objTrRX.IniciaEnvioArchivo(ofdOpenFile.FileName);
                     MessageBox.Show("Enviando Archivo");
                     btnCerrarPuerto.Enabled = false;
+                    //Añadir la progressbar
                 }
                 catch (Exception ex)
                 {

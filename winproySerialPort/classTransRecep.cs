@@ -10,6 +10,7 @@ namespace winproySerialPort
     public partial class ClassTransRecep
     {
         private static readonly object control = new object();
+        private static readonly object control2 = new object();
         private SerialPort puerto;
         private Boolean BufferSalidaVacio;
         //Envío trama
@@ -18,9 +19,6 @@ namespace winproySerialPort
         readonly byte[] TramaRelleno;
         //Recibir
         byte[] TramaRecibida;
-        //Lista Enviando
-        LinkedList<ClassArchivoEnviando> listaEnviando = new LinkedList<ClassArchivoEnviando>();
-        LinkedList<ClassArchivoEnviando> listaRecibiendo = new LinkedList<ClassArchivoEnviando>();
         public ClassTransRecep()
         {
             TramaEnvio = new byte[1024];
@@ -36,14 +34,16 @@ namespace winproySerialPort
         {
             try
             {
+                num = 1;
                 puerto = new SerialPort(NombrePuerto, baudrate, Parity.Even, 8, StopBits.Two);
                 puerto.ReceivedBytesThreshold = 1024;
                 puerto.DataReceived += new SerialDataReceivedEventHandler(Puerto_DataReceived);
                 puerto.Open();
                 procesoVerificaSalida = new Thread(VerificandoSalida);
                 procesoVerificaSalida.Start();
-                archivoEnviar = new ClassArchivoEnviando();
-                archivoRecibir = new ClassArchivoEnviando();
+                //archivoEnvia = new ClassArchivoEnviando();
+                procesoEnvioArchivo = new Thread(Enviar);
+                procesoEnvioArchivo.Start();
             }
             catch (Exception e)
             {
@@ -83,11 +83,32 @@ namespace winproySerialPort
                 }
             }
         }
+        protected virtual void OnProcesoEnvio(long tam, long avance, int num)
+        {
+            if (Proceso != null)
+            {
+                Proceso(tam,avance,num);//No está aquí F
+            }
+        }
+        protected virtual void OnInicioProceso(int num, string nombreArchivo)
+        {
+            if (InicioProceso != null)
+            {
+                InicioProceso(num,nombreArchivo);//No está aquí F
+            }
+        }
+        protected virtual void OnLlegoMensaje()
+        {
+            if (LlegoMensaje != null)
+            {
+                LlegoMensaje(this, mensRecibido);//No está aquí F
+            }
+        }
         private void VerificandoSalida()
         {
             while (puerto.IsOpen)
             {
-                if (puerto.BytesToWrite > 0)//Buffer de salida no vacío
+                if (puerto.BytesToWrite > 0)//Buffer de salida no vacío//Exception al suspender xD
                     BufferSalidaVacio = false;
                 else
                     BufferSalidaVacio = true;

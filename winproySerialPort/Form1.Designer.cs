@@ -55,17 +55,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.flpEnviando = new System.Windows.Forms.FlowLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.progressBar4 = new System.Windows.Forms.ProgressBar();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.progressBar3 = new System.Windows.Forms.ProgressBar();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label17 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -101,7 +92,6 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -264,7 +254,7 @@
             // 
             this.btnSelectFile.Enabled = false;
             this.btnSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectFile.Location = new System.Drawing.Point(95, 25);
+            this.btnSelectFile.Location = new System.Drawing.Point(694, 0);
             this.btnSelectFile.Name = "btnSelectFile";
             this.btnSelectFile.Size = new System.Drawing.Size(158, 31);
             this.btnSelectFile.TabIndex = 15;
@@ -280,7 +270,7 @@
             this.ayudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(866, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(864, 24);
             this.menuStrip1.TabIndex = 16;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -329,7 +319,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnSelectFile);
             this.groupBox2.Controls.Add(this.prgEnvio);
             this.groupBox2.Location = new System.Drawing.Point(30, 169);
             this.groupBox2.Name = "groupBox2";
@@ -346,7 +335,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(866, 464);
+            this.tabControl1.Size = new System.Drawing.Size(864, 464);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage1
@@ -359,7 +348,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(858, 438);
+            this.tabPage1.Size = new System.Drawing.Size(856, 438);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Chat";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -370,7 +359,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(858, 438);
+            this.tabPage2.Size = new System.Drawing.Size(856, 438);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Transferencias";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -383,120 +372,38 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 16);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(822, 385);
+            this.tabControl2.Size = new System.Drawing.Size(825, 385);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.flpEnviando);
             this.tabPage3.Controls.Add(this.label8);
-            this.tabPage3.Controls.Add(this.panel1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(814, 359);
+            this.tabPage3.Size = new System.Drawing.Size(817, 359);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Enviando";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // flpEnviando
+            // 
+            this.flpEnviando.AutoScroll = true;
+            this.flpEnviando.Location = new System.Drawing.Point(3, 69);
+            this.flpEnviando.Margin = new System.Windows.Forms.Padding(1);
+            this.flpEnviando.Name = "flpEnviando";
+            this.flpEnviando.Size = new System.Drawing.Size(700, 287);
+            this.flpEnviando.TabIndex = 10;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(28, 19);
+            this.label8.Location = new System.Drawing.Point(16, 29);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 13);
             this.label8.TabIndex = 9;
             this.label8.Text = "ENVIANDO";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label11);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.progressBar4);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.progressBar3);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Location = new System.Drawing.Point(15, 44);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 296);
-            this.panel1.TabIndex = 7;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(323, 125);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 8;
-            this.label11.Text = "label11";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(34, 125);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(59, 13);
-            this.label12.TabIndex = 6;
-            this.label12.Text = "archivo.jpg";
-            // 
-            // progressBar4
-            // 
-            this.progressBar4.Location = new System.Drawing.Point(117, 115);
-            this.progressBar4.Name = "progressBar4";
-            this.progressBar4.Size = new System.Drawing.Size(172, 23);
-            this.progressBar4.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(323, 80);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(35, 13);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "label9";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(34, 80);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "archivo.jpg";
-            // 
-            // progressBar3
-            // 
-            this.progressBar3.Location = new System.Drawing.Point(117, 70);
-            this.progressBar3.Name = "progressBar3";
-            this.progressBar3.Size = new System.Drawing.Size(172, 23);
-            this.progressBar3.TabIndex = 4;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(323, 36);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "label5";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(34, 36);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "archivo.jpg";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(117, 26);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(172, 23);
-            this.progressBar1.TabIndex = 1;
             // 
             // tabPage5
             // 
@@ -505,7 +412,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(814, 359);
+            this.tabPage5.Size = new System.Drawing.Size(792, 359);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Descargando";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -732,7 +639,7 @@
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 466);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(866, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(864, 22);
             this.statusStrip1.TabIndex = 19;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -741,7 +648,8 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 488);
+            this.ClientSize = new System.Drawing.Size(864, 488);
+            this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
@@ -767,8 +675,6 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -812,16 +718,6 @@
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ProgressBar progressBar4;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ProgressBar progressBar3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Panel panel2;
@@ -846,6 +742,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.FlowLayoutPanel flpEnviando;
     }
 }
 

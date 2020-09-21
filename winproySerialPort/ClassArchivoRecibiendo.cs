@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace winproySerialPort
 {
-    class ClassArchivoEnviando
+    class ClassArchivoRecibiendo
     {
         public string Nombre { get; set; }
         public long Tamaño { get; set; }
@@ -17,8 +17,8 @@ namespace winproySerialPort
         public Boolean Activo { get; set; }
         public string TipoArchivo { get; set; }//Para la presentación
         //Mantener a los stream
-        public FileStream FlujoArchivoEnviar { get; set; }
-        public BinaryReader LeyendoArchivo { get; set; }
+        public FileStream FlujoArchivoRecibir { get; set; }
+        public BinaryWriter EscribiendoArchivo { get; set; }
         
     }
 }

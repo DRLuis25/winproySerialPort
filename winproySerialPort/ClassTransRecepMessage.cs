@@ -34,20 +34,7 @@ namespace winproySerialPort
                 MessageBox.Show("Ha ocurrido un error al recibir un mensaje: " + e.Message);
             }
         }
-        protected virtual void OnLlegoMensaje()
-        {
-            if (LlegoMensaje != null)
-            {
-                LlegoMensaje(this, mensRecibido);//No está aquí F
-            }
-        }
-        protected virtual void OnProcesoEnvio()
-        {
-            if (Proceso != null)
-            {
-                Proceso(archivoEnviar.Tamaño, archivoEnviar.Avance);//No está aquí F
-            }
-        }
+        
         public void Enviar(string mens)
         {
             mensajeEnviar = mens;
