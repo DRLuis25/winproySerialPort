@@ -40,9 +40,9 @@ namespace winproySerialPort
                 }  
             }
         }
-        private void avance(long tam, long avance, int num)
+        private void avance(long tam, long avance, int num, bool ED)
         {
-            OnProcesoEnvio(tam, avance, num);
+            OnProcesoEnvio(tam, avance, num, ED);
         }
         private void EnviandoArchivo(ClassArchivoEnviando archivoEnviar)
         {
@@ -61,9 +61,15 @@ namespace winproySerialPort
                     archivoEnviar.Avance += 1019;
                     lock (control)
                     {
+                        //Random r = new Random();
+                        //do
+                        //{
+                        //    if (!BufferSalidaVacio)
+                        //        Thread.Sleep(r.Next(0, 1000));
+                        //} while (!BufferSalidaVacio);
                         puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
                         puerto.Write(TramaEnvioArchivo, 0, 1019);
-                        Thread a = new Thread(()=> avance(archivoEnviar.Tamaño, archivoEnviar.Avance, archivoEnviar.Num));
+                        Thread a = new Thread(()=> avance(archivoEnviar.Tamaño, archivoEnviar.Avance, archivoEnviar.Num, true));
                         a.Start();
                     }
                 }
@@ -85,7 +91,7 @@ namespace winproySerialPort
             }
             catch (Exception e)
             {
-                MessageBox.Show("Errorwsdfs: " + e.Message);
+                MessageBox.Show("Error: " + e.Message);
                 return;
             }
             finally
@@ -94,17 +100,15 @@ namespace winproySerialPort
                 {
                     archivoEnviar.LeyendoArchivo.Close();
                     archivoEnviar.FlujoArchivoEnviar.Close();
-                    lock (control)
-                    {
-                        OnProcesoEnvio(archivoEnviar.Tamaño, archivoEnviar.Tamaño, archivoEnviar.Num);
-                    }
-                    Thread x = new Thread(a);
+                    Thread asd = new Thread(() => avance(archivoEnviar.Tamaño, archivoEnviar.Tamaño, archivoEnviar.Num, true));
+                    asd.Start();
+                    Thread x = new Thread(A);
                     x.Start();
                 }
             }
             
         }
-        private void a()
+        private void A()
         {
             MessageBox.Show("Archivo Enviado xD");
         }

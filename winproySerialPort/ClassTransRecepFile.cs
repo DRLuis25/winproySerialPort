@@ -15,10 +15,10 @@ namespace winproySerialPort
         private int num;
         
         //Delegado para envío archivo
-        public delegate void HandlerProceso(long tam, long avance, int num);
+        public delegate void HandlerProceso(long tam, long avance, int num, bool ED);
         public event HandlerProceso Proceso;
         //Delegado Crear progressbar
-        public delegate void HandlerInicioProceso(int num, string nombreArchivo);
+        public delegate void HandlerInicioProceso(int num, string nombreArchivo, bool ED);
         public event HandlerInicioProceso InicioProceso;
         //Hilos envío Archivo
         Thread procesoEnvioArchivo;
@@ -44,9 +44,8 @@ namespace winproySerialPort
                 lock (contrl)
                 {
                     Thread.Sleep(1000);
-                    OnInicioProceso(archivoEnvia.Num, archivoEnvia.Nombre);
+                    OnInicioProceso(archivoEnvia.Num, archivoEnvia.Nombre, true);
                     listaEnviando.AddLast(archivoEnvia);
-                    
                 }
                 //If(Llegó la cabecera){
                 //Agregar a la linkedlist el archivo a enviar
@@ -110,7 +109,8 @@ namespace winproySerialPort
                 lock (control2)
                 {
                     listaRecibiendo.AddLast(archivoRecibir);
-                    
+                    OnInicioProceso(archivoRecibir.Num, archivoRecibir.Nombre, false);
+
                 }
             }
             catch (Exception e)
@@ -155,6 +155,8 @@ namespace winproySerialPort
                             item.EscribiendoArchivo.Write(TramaRecibida, 5, 1019);
                             item.Avance += 1019;
                             //listaRecibiendo.Find(Buscar(num)).Value = item;
+                            Thread a = new Thread(() => avance(item.Tamaño, item.Avance, item.Num, false));
+                            a.Start();
                         }
                         else
                         {
@@ -179,6 +181,8 @@ namespace winproySerialPort
                                     //MessageBox.Show("Entrooo finalizado");
                                     item.EscribiendoArchivo.Close();
                                     item.FlujoArchivoRecibir.Close();
+                                    Thread a = new Thread(() => avance(item.Tamaño, item.Tamaño, item.Num, false));
+                                    a.Start();
                                 }
                             }
                         }

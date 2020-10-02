@@ -83,18 +83,18 @@ namespace winproySerialPort
                 }
             }
         }
-        protected virtual void OnProcesoEnvio(long tam, long avance, int num)
+        protected virtual void OnProcesoEnvio(long tam, long avance, int num, bool ED)
         {
             if (Proceso != null)
             {
-                Proceso(tam,avance,num);//No está aquí F
+                Proceso(tam,avance,num,ED);//No está aquí F
             }
         }
-        protected virtual void OnInicioProceso(int num, string nombreArchivo)
+        protected virtual void OnInicioProceso(int num, string nombreArchivo, bool ED)
         {
             if (InicioProceso != null)
             {
-                InicioProceso(num,nombreArchivo);//No está aquí F
+                InicioProceso(num,nombreArchivo,ED);//No está aquí F
             }
         }
         protected virtual void OnLlegoMensaje()

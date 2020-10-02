@@ -22,9 +22,9 @@ namespace winproySerialPort
         delegate void MostrarOtroProceso(string mensaje);
         MostrarOtroProceso delegadoMostrar;
         //Delegado proceso Envío
-        delegate void MostrarEnvio(long tam, long avance, int num);
+        delegate void MostrarEnvio(long tam, long avance, int num, bool ED);
         MostrarEnvio delegadoEnvio;
-        delegate void MostrarInicioEnvio(int num, string nombreArchivo);
+        delegate void MostrarInicioEnvio(int num, string nombreArchivo, bool ED);
         MostrarInicioEnvio delegadoInicioEnvio;
         int baudrate;
         string x;
@@ -45,6 +45,7 @@ namespace winproySerialPort
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             //if (Path.IsPathRooted("F"))
             //    MessageBox.Show("yey");
             //else
@@ -59,41 +60,63 @@ namespace winproySerialPort
             delegadoInicioEnvio = new MostrarInicioEnvio(MostrandoInicioProceso);
             y = 3;
         }
-        private void MostrandoProceso(long tam, long avance, int num)
+        private void MostrandoProceso(long tam, long avance, int num, bool ED)
         {
             lock (control)
             {
-                GroupBox group = flpEnviando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num.ToString("D4")));
-                //Label etiqueta = group.Controls.OfType<Label>().FirstOrDefault(b => b.Name.Equals("lblArchivoN" + num.ToString("D4")));
-                ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num.ToString("D4")));
-                //Label button = groupBox1.Controls.OfType<Button>().FirstOrDefault(b => b.Name.Equals("btn"));
-                //etiqueta.Text = "Changed...";
-                proceso.Maximum = (int)tam;
-                proceso.Value = (int)avance;
-                //VIEJO
-                //prgEnvio.Maximum = (int)x;
-                //prgEnvio.Value = (int)y;
-                //if (x == y)
-                //{
-                //    btnCerrarPuerto.Enabled = true;
-                //    prgEnvio.Value = 0;
-                //}
+                if (ED)
+                {
+                    GroupBox group = flpEnviando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num.ToString("D4")));
+                    //Label etiqueta = group.Controls.OfType<Label>().FirstOrDefault(b => b.Name.Equals("lblArchivoN" + num.ToString("D4")));
+                    ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num.ToString("D4")));
+                    //Label button = groupBox1.Controls.OfType<Button>().FirstOrDefault(b => b.Name.Equals("btn"));
+                    //etiqueta.Text = "Changed...";
+                    proceso.Maximum = (int)tam;
+                    proceso.Value = (int)avance;
+                    //VIEJO
+                    //prgEnvio.Maximum = (int)x;
+                    //prgEnvio.Value = (int)y;
+                    //if (x == y)
+                    //{
+                    //    btnCerrarPuerto.Enabled = true;
+                    //    prgEnvio.Value = 0;
+                    //}
+                }
+                else
+                {
+                    GroupBox group = flpDescargando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num.ToString("D4")));
+                    //Label etiqueta = group.Controls.OfType<Label>().FirstOrDefault(b => b.Name.Equals("lblArchivoN" + num.ToString("D4")));
+                    ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num.ToString("D4")));
+                    //Label button = groupBox1.Controls.OfType<Button>().FirstOrDefault(b => b.Name.Equals("btn"));
+                    //etiqueta.Text = "Changed...";
+                    proceso.Maximum = (int)tam;
+                    proceso.Value = (int)avance;
+                }
             }
         }
-        private void MostrandoInicioProceso(int num, string nombreArchivo)
+        private void MostrandoInicioProceso(int num, string nombreArchivo, bool ED)
         {
             lock (control)
             {
-                GroupBox insertar = ArchivoNuevo(num, nombreArchivo);
-                flpEnviando.Controls.Add(insertar);
+                if (ED)
+                {
+                    GroupBox insertar = ArchivoNuevo(num, nombreArchivo,"E");
+                    flpEnviando.Controls.Add(insertar);
+                }
+                else
+                {
+                    GroupBox insertar = ArchivoNuevo(num, nombreArchivo,"D");
+                    flpDescargando.Controls.Add(insertar);
+                }
             }
         }
-        private GroupBox ArchivoNuevo(int num, string nombreArchivo)
+        private GroupBox ArchivoNuevo(int num, string nombreArchivo,string x)
         {
             GroupBox grpArchivoN = new GroupBox();
             Button btnCerrarArchivoN = new Button();
             ProgressBar prgArchivoN = new ProgressBar();
             Label lblArchivoN = new Label();
+            Label lbltemp = new Label();
             // 
             // lblArchivoN
             // 
@@ -104,6 +127,12 @@ namespace winproySerialPort
             lblArchivoN.Size = new System.Drawing.Size(146, 20);
             lblArchivoN.TabIndex = 0;
             lblArchivoN.Text = nombreArchivo.Length>15? nombreArchivo.Substring(0, 12)+"...":nombreArchivo;
+            // 
+            // lbltemp
+            // 
+            lbltemp.Name = "lblTemp" + num.ToString("D4");
+            lbltemp.Text = x;
+            //lbltemp.Visible = false;
             // 
             // prgArchivoN
             // 
@@ -121,12 +150,14 @@ namespace winproySerialPort
             btnCerrarArchivoN.TabIndex = 2;
             btnCerrarArchivoN.Text = "X";
             btnCerrarArchivoN.UseVisualStyleBackColor = true;
+            btnCerrarArchivoN.Click += new System.EventHandler(Borrar);
             // 
             // grpArchivoN
             // 
             grpArchivoN.Controls.Add(btnCerrarArchivoN);
             grpArchivoN.Controls.Add(prgArchivoN);
             grpArchivoN.Controls.Add(lblArchivoN);
+            grpArchivoN.Controls.Add(lbltemp);
             grpArchivoN.Location = new System.Drawing.Point(y, 3);
             y += 86;
             grpArchivoN.Name = "grpArchivoN" + num.ToString("D4");
@@ -135,14 +166,34 @@ namespace winproySerialPort
             grpArchivoN.TabStop = false;
             return grpArchivoN;
         }
-        private void ObjTrRX_InicioProceso(int num, string nombreArchivo)
+        private void Borrar(object sender, EventArgs e)
         {
-            Invoke(delegadoInicioEnvio, num, nombreArchivo);
+            GroupBox group;
+            string num;
+            Button button = sender as Button;
+            num = button.Name.Substring(17, 4);
+            group = flpEnviando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num));
+            if(group == null)
+                group = flpDescargando.Controls.OfType<GroupBox>().FirstOrDefault(b => b.Name.Equals("grpArchivoN" + num));
+            Label etiqueta = group.Controls.OfType<Label>().FirstOrDefault(b => b.Name.Equals("lblTemp" + num));
+            string x = etiqueta.Text;
+            ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num));
+            if (proceso.Value == proceso.Maximum )
+            {
+                if(x=="E")
+                    flpEnviando.Controls.Remove(flpEnviando.Controls.Find("grpArchivoN" + num, true)[0]);
+                else
+                    flpDescargando.Controls.Remove(flpDescargando.Controls.Find("grpArchivoN" + num, true)[0]);
+            }
         }
-        private void ObjTrRX_proceso(long tam, long avance, int num)
+        private void ObjTrRX_InicioProceso(int num, string nombreArchivo, bool ED)
         {
-            
-            Invoke(delegadoEnvio, tam, avance, num);
+            Invoke(delegadoInicioEnvio, num, nombreArchivo, ED);
+        }
+        private void ObjTrRX_proceso(long tam, long avance, int num, bool ED)
+        {
+
+            Invoke(delegadoEnvio, tam, avance, num, ED);
         }
         
         private void ObjTrRx_LlegoMensaje(object o, string mm)
@@ -251,10 +302,15 @@ namespace winproySerialPort
             objTrRX.CerrarPuerto();
             Application.Exit();
         }
-
-        private void descargasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            MessageBox.Show("Programa Elaborado por \nDelgado Rodríguez Luis Guillermo");
+        }
+
+        private void ajustesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form ajustes = new FormSettings();
+            ajustes.Show();
         }
     }
 }

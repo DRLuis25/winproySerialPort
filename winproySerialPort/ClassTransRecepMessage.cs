@@ -50,17 +50,9 @@ namespace winproySerialPort
         {
             lock (control)
             {
-                try
-                {
-                    puerto.Write(TramaCabeceraEnvio, 0, 5);
-                    puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
-                    puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);
-                }
-                catch (Exception e)
-                {
-
-                    throw e;
-                }
+                puerto.Write(TramaCabeceraEnvio, 0, 5);
+                puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
+                puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);
             }
         }
     }
