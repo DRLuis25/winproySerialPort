@@ -105,9 +105,7 @@ namespace winproySerialPort
             ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num));
             if (proceso.Value == proceso.Maximum)
             {
-                if (x == "E")
                     flpEnviando.Controls.Remove(flpEnviando.Controls.Find("grpArchivoN" + num, true)[0]);
-
             }
         }
         private void MostrandoInicioProceso(int num, string nombreArchivo, bool ED)
@@ -119,7 +117,6 @@ namespace winproySerialPort
                     GroupBox insertar = ArchivoNuevo(num, nombreArchivo, "E");
                     flpEnviando.Controls.Add(insertar);
                 }
-
             }
         }
         private void MostrandoProceso(long tam, long avance, int num, bool ED)
@@ -152,7 +149,6 @@ namespace winproySerialPort
             }
 
         }
-
         private void btnSalir_Click(object sender, EventArgs e)
         {
             this.Hide();

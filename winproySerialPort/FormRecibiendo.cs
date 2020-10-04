@@ -28,7 +28,6 @@ namespace winproySerialPort
         MostrarInicioEnvio delegadoInicioEnvio;
         private GroupBox ArchivoNuevo(int num, string nombreArchivo, string x)
         {
-            //FALTA CAMBIAR LOS VALORES PARA EL DISEÑO
             GroupBox grpArchivoN = new GroupBox();
             Button btnCerrarArchivoN = new Button();
             ProgressBar prgArchivoN = new ProgressBar();
@@ -54,7 +53,7 @@ namespace winproySerialPort
             lbltemp.TabIndex = 3;
             lbltemp.Text = x;
             lbltemp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //lbltemp.Visible = false;
+            lbltemp.Visible = false;
             // 
             // prgArchivoN
             // 
@@ -105,9 +104,7 @@ namespace winproySerialPort
             ProgressBar proceso = group.Controls.OfType<ProgressBar>().FirstOrDefault(b => b.Name.Equals("prgArchivoN" + num));
             if (proceso.Value == proceso.Maximum)
             {
-                if (x != "E")
                     flpDescargando.Controls.Remove(flpDescargando.Controls.Find("grpArchivoN" + num, true)[0]);
-
             }
         }
         private void MostrandoInicioProceso(int num, string nombreArchivo, bool ED)

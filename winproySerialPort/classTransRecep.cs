@@ -17,7 +17,6 @@ namespace winproySerialPort
         //Recibir
         byte[] TramaRecibida;
         //Temp
-        private bool bAx;
         bool ENT;
         public ClassTransRecep()
         {
@@ -67,12 +66,8 @@ namespace winproySerialPort
                             procesoConstruyeArchivo = new Thread(ConstruirArchivo);
                             procesoConstruyeArchivo.Start();
                         }
-                        //ConstruirArchivo();//Comentar? YES
                         break;
                     case "C":
-                        /*
-                        if(MessageBox.Show("Recibir Archivo?", "Archivo entrante", MessageBoxButtons.YesNo, MessageBoxIcon.Question,MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
-                        {}*/
                         InicioConstruirArchivo();
                         break;
                     default:
@@ -85,14 +80,14 @@ namespace winproySerialPort
         {
             if (Proceso != null)
             {
-                Proceso(tam,avance,num,ED);//No está aquí F
+                Proceso(tam,avance,num,ED);
             }
         }
         protected virtual void OnInicioProceso(int num, string nombreArchivo, bool ED)
         {
             if (InicioProceso != null)
             {
-                InicioProceso(num,nombreArchivo,ED);//No está aquí F
+                InicioProceso(num,nombreArchivo,ED);
             }
         }
         protected virtual void OnLlegoMensaje()

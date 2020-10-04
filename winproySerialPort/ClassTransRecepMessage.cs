@@ -47,6 +47,12 @@ namespace winproySerialPort
         }
         private void Enviando()
         {
+            Random r = new Random();
+            do
+            {
+                if (!BufferSalidaVacio)
+                    Thread.Sleep(r.Next(0, 1000));
+            } while (!BufferSalidaVacio || ENT);
             puerto.Write(TramaCabeceraEnvio, 0, 5);
             puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
             puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);

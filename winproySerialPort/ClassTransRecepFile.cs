@@ -11,9 +11,7 @@ namespace winproySerialPort
 {
     public partial class ClassTransRecep
     {
-        //temporal
         private int num;
-        
         //Delegado para envío archivo
         public delegate void HandlerProceso(long tam, long avance, int num, bool ED);
         public event HandlerProceso Proceso;
@@ -39,14 +37,11 @@ namespace winproySerialPort
                 archivoEnvia.Num = num;
                 num++;
                 archivoEnvia.Activo = true;
-                Thread t = new Thread(()=>EnviarNameyTam(archivoEnvia));    
+                Thread t = new Thread(()=>EnviarNameyTam(archivoEnvia));                                                  //If(Llegó la cabecera){                                                                                                 
                 t.Start();
-                Thread a = new Thread(() => inicio(archivoEnvia.Num, archivoEnvia.Nombre, true));
-                a.Start();
-                listaEnviando.AddLast(archivoEnvia);
-                //If(Llegó la cabecera){
-                //Agregar a la linkedlist el archivo a enviar
-                //} (Falta x'D)
+                Thread a = new Thread(() => inicio(archivoEnvia.Num, archivoEnvia.Nombre, true));                       //Agregar a la linkedlist el archivo a enviar
+                a.Start();                                                                                              //} (Falta x'D)
+                listaEnviando.AddLast(archivoEnvia);                                                                                               
             }
             catch (Exception e)
             {
@@ -89,57 +84,41 @@ namespace winproySerialPort
             MessageBox.Show(temp);
         }
         private void InicioConstruirArchivo()
-        {
-            lock (control2)
-            {
-                //archivoRecibir
-                ClassArchivoRecibiendo archivoRecibir = new ClassArchivoRecibiendo();
+        {                                                                                                                   lock (control2){
+            //archivoRecibir
+            ClassArchivoRecibiendo archivoRecibir = new ClassArchivoRecibiendo();
             string nombreArchivo="";
             long tamarchivo=0;
             string num;
             string CabRec = ASCIIEncoding.UTF8.GetString(TramaRecibida, 1, 4);
             int LongMensRec = Convert.ToInt16(CabRec);
-            bool temp2 = true;
-            do
-            {
-                try
-                {
-                    nombreArchivo = ASCIIEncoding.UTF8.GetString(TramaRecibida, 5, LongMensRec);
-                    string temp = ASCIIEncoding.UTF8.GetString(TramaRecibida, LongMensRec + 5, 19);
-                    tamarchivo = long.Parse(temp);
-                }
-                catch (Exception)
-                {
-                        Console.WriteLine("Error");
-                    temp2 = false;
-                }
-            } while (!temp2);
+            bool temp2 = true;                                                                                          do{try{
+            nombreArchivo = ASCIIEncoding.UTF8.GetString(TramaRecibida, 5, LongMensRec);
+            string temp = ASCIIEncoding.UTF8.GetString(TramaRecibida, LongMensRec + 5, 19);
+            tamarchivo = long.Parse(temp);                                                                              }catch (Exception){Console.WriteLine("Error");temp2 = false;}} while (!temp2);
             num = ASCIIEncoding.UTF8.GetString(TramaRecibida, LongMensRec + 24, 4);
-                try
-                {
-                    //Crea un archivo en el disco
-                    string filepath = Path.Combine(ConfigurationManager.AppSettings["Path"], nombreArchivo);
-                    filepath = ChangeFileName(filepath);
-                    archivoRecibir.FlujoArchivoRecibir = new FileStream(filepath, FileMode.CreateNew, FileAccess.Write);//Manejar excepcion
-                    archivoRecibir.EscribiendoArchivo = new BinaryWriter(archivoRecibir.FlujoArchivoRecibir);
-                    archivoRecibir.Nombre = nombreArchivo;
-                    archivoRecibir.Num = Convert.ToInt16(num);
-                    //MessageBox.Show("Num recibido: " + archivoRecibir.Num);
-                    archivoRecibir.Tamaño = tamarchivo;//Obviamente obtener tamaño
-                    archivoRecibir.Avance = 0;
-                    archivoRecibir.Activo = true;
-                    rarchivo = true;
-                    //Añadir a la lista
-                
-                        listaRecibiendo.AddLast(archivoRecibir);
-                        OnInicioProceso(archivoRecibir.Num, archivoRecibir.Nombre, false);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("ERROR!: No se ha podido crear el archivo: " + e.Message);
-                    rarchivo = false;
-                }
+            try
+            {
+                //Crea un archivo en el disco
+                string filepath = Path.Combine(ConfigurationManager.AppSettings["Path"], nombreArchivo);
+                filepath = ChangeFileName(filepath);
+                archivoRecibir.FlujoArchivoRecibir = new FileStream(filepath, FileMode.CreateNew, FileAccess.Write);//Manejar excepcion
+                archivoRecibir.EscribiendoArchivo = new BinaryWriter(archivoRecibir.FlujoArchivoRecibir);
+                archivoRecibir.Nombre = nombreArchivo;
+                archivoRecibir.Num = Convert.ToInt16(num);
+                archivoRecibir.Tamaño = tamarchivo;
+                archivoRecibir.Avance = 0;
+                archivoRecibir.Activo = true;
+                rarchivo = true;
+                //Añadir a la lista para recibir
+                listaRecibiendo.AddLast(archivoRecibir);
+                OnInicioProceso(archivoRecibir.Num, archivoRecibir.Nombre, false);
             }
+            catch (Exception e)
+            {
+                MessageBox.Show("ERROR!: No se ha podido crear el archivo: " + e.Message);
+                rarchivo = false;
+            }                                                                                                                                                                                   }       
         }
         private string ChangeFileName(string fullpath)
         {
@@ -157,65 +136,49 @@ namespace winproySerialPort
             return fullpath;
         }
         private void ConstruirArchivo()
-        {
-            lock (control2)
+        {                                                                                                                                                                                           lock (control2){
+            //Se lee de la lista según el nro del archivo recibida
+            string nro = ASCIIEncoding.UTF8.GetString(TramaRecibida, 1, 4);
+            int num = Convert.ToInt16(nro);
+            foreach (ClassArchivoRecibiendo item in listaRecibiendo)
             {
-                bool test = false;
-                //Se lee de la lista según el nro del archivo recibida
-                string nro = ASCIIEncoding.UTF8.GetString(TramaRecibida, 1, 4);
-                int num = Convert.ToInt16(nro);
-                //ClassArchivoRecibiendo temp = Buscar(num);
-                foreach (ClassArchivoRecibiendo item in listaRecibiendo)
+                if (item.Num == num )
                 {
-                    if (item.Num == num )
+                    if (item.Avance <= item.Tamaño - 1019)
                     {
-                        test = true;
-                        if (item.Avance <= item.Tamaño - 1019)//ERROR
+                        item.EscribiendoArchivo.Write(TramaRecibida, 5, 1019);
+                        item.Avance += 1019;
+                        Thread a = new Thread(() => avance(item.Tamaño, item.Avance, item.Num, false));
+                        a.Start();
+                    }
+                    else
+                    {
+                        try
                         {
-                            item.EscribiendoArchivo.Write(TramaRecibida, 5, 1019);
-                            item.Avance += 1019;
-                            //listaRecibiendo.Find(Buscar(num)).Value = item;
-                            Thread a = new Thread(() => avance(item.Tamaño, item.Avance, item.Num, false));
-                            a.Start();
+                            int tamanito = Convert.ToInt16(item.Tamaño - item.Avance);
+                            item.EscribiendoArchivo.Write(TramaRecibida, 5, tamanito);
+                            item.Activo = false;
+                            //MessageBox.Show("Archivo recibido");
+                            item.Avance = item.Tamaño;
                         }
-                        else
+                        catch (Exception e)
                         {
-                            try
+                            MessageBox.Show("Error al construir el archivo: " + e.Message);
+                        }
+                        finally
+                        {
+                            if (item.Avance == item.Tamaño)
                             {
-                                int tamanito = Convert.ToInt16(item.Tamaño - item.Avance);
-                                item.EscribiendoArchivo.Write(TramaRecibida, 5, tamanito);
-                                item.Activo = false;
-                                //MessageBox.Show("Archivo recibido");
-                                item.Avance = item.Tamaño;
-                                //listaRecibiendo.Remove(listaRecibiendo.Find(Buscar(num)).Value);
-                            }
-                            catch (Exception e)
-                            {
-                                MessageBox.Show("Error contruir archivo: " + e.Message);
-                                //throw e;
-                            }
-                            finally
-                            {
-                                if (item.Avance == item.Tamaño)
-                                {
-                                    //MessageBox.Show("Entrooo finalizado");
-                                    item.EscribiendoArchivo.Close();
-                                    item.FlujoArchivoRecibir.Close();
-                                    Thread a = new Thread(() => avance(item.Tamaño, item.Tamaño, item.Num, false));
-                                    a.Start();
-                                }
+                                //MessageBox.Show("Finalizado");
+                                item.EscribiendoArchivo.Close();
+                                item.FlujoArchivoRecibir.Close();
+                                Thread a = new Thread(() => avance(item.Tamaño, item.Tamaño, item.Num, false));
+                                a.Start();
                             }
                         }
                     }
                 }
-                if (!test)
-                {
-                    Thread envio2 = new Thread(() => Mostrar("No se encontró: " + num.ToString()));
-                    envio2.Start();
-                }
-            }
-                
-            
+            }                                                                                                                                                                               } 
         }
     }
 }
