@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.rchConversacion = new System.Windows.Forms.RichTextBox();
             this.cbmPuerto = new System.Windows.Forms.ComboBox();
@@ -60,6 +61,7 @@
             this.flpDescargando = new System.Windows.Forms.FlowLayoutPanel();
             this.label17 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
             this.grpParametros.SuspendLayout();
@@ -219,7 +221,7 @@
             // 
             this.btnSelectFile.Enabled = false;
             this.btnSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectFile.Location = new System.Drawing.Point(512, -2);
+            this.btnSelectFile.Location = new System.Drawing.Point(90, 189);
             this.btnSelectFile.Name = "btnSelectFile";
             this.btnSelectFile.Size = new System.Drawing.Size(158, 31);
             this.btnSelectFile.TabIndex = 15;
@@ -289,6 +291,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnSelectFile);
             this.tabPage1.Controls.Add(this.grpParametros);
             this.tabPage1.Controls.Add(this.btnEnviar);
             this.tabPage1.Controls.Add(this.btnCerrarPuerto);
@@ -421,7 +424,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(762, 401);
-            this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
@@ -486,6 +488,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.IO.Ports.SerialPort serialPort1;
     }
 }
 

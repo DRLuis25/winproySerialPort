@@ -9,7 +9,6 @@ namespace winproySerialPort
 {
     public partial class ClassTransRecep
     {
-        private static readonly object control = new object();
         private static readonly object control2 = new object();
         private SerialPort puerto;
         private Boolean BufferSalidaVacio;
@@ -18,7 +17,7 @@ namespace winproySerialPort
         //Recibir
         byte[] TramaRecibida;
         //Temp
-        bool bAx;
+        private bool bAx;
         bool ENT;
         public ClassTransRecep()
         {
@@ -37,14 +36,12 @@ namespace winproySerialPort
             {
                 num = 1;
                 puerto = new SerialPort(NombrePuerto, baudrate, Parity.Even, 8, StopBits.Two);
+                puerto.ReadBufferSize = 16384;
                 puerto.ReceivedBytesThreshold = 1024;
                 puerto.DataReceived += new SerialDataReceivedEventHandler(Puerto_DataReceived);
                 puerto.Open();
                 procesoVerificaSalida = new Thread(VerificandoSalida);
                 procesoVerificaSalida.Start();
-                //archivoEnvia = new ClassArchivoEnviando();
-                
-                bAx = false;
             }
             catch (Exception e)
             {
@@ -79,7 +76,7 @@ namespace winproySerialPort
                         InicioConstruirArchivo();
                         break;
                     default:
-                        MessageBox.Show("Trama no reconocida");
+                        MessageBox.Show("Error en la recepción, Trama no reconocida");
                         break;
                 }
             }

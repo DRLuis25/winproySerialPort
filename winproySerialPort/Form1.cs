@@ -200,10 +200,8 @@ namespace winproySerialPort
             {
                 //No se enviará el archivo
                 Environment.Exit(0);
-            }
-                
+            } 
         }
-        
         private void ObjTrRx_LlegoMensaje(object o, string mm)
         {
             Invoke(delegadoMostrar, mm);

@@ -115,15 +115,9 @@ namespace winproySerialPort
                     archivoEnviar.FlujoArchivoEnviar.Close();
                     Thread asd = new Thread(() => avance(archivoEnviar.Tamaño, archivoEnviar.Tamaño, archivoEnviar.Num, true));
                     asd.Start();
-                    Thread x = new Thread(A);
-                    x.Start();
                 }
             }
             
-        }
-        private void A()
-        {
-            MessageBox.Show("Archivo Enviado xD");
         }
     }
 }

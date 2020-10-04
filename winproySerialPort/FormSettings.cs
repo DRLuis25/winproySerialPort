@@ -24,7 +24,13 @@ namespace winproySerialPort
             lblRuta.Text = filepath;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnCambiarUbicacion_Click(object sender, EventArgs e)
         {
             if (fbdUbicacion.ShowDialog() == DialogResult.OK)
             {
@@ -42,9 +48,9 @@ namespace winproySerialPort
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSalir_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
     }
 }
