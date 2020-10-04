@@ -14,11 +14,12 @@ namespace winproySerialPort
         private SerialPort puerto;
         private Boolean BufferSalidaVacio;
         //Envío trama
-        byte[] TramaEnvio;
-        byte[] TramaCabeceraEnvio;
         readonly byte[] TramaRelleno;
         //Recibir
         byte[] TramaRecibida;
+        //Temp
+        bool bAx;
+        bool ENT;
         public ClassTransRecep()
         {
             TramaEnvio = new byte[1024];
@@ -42,8 +43,8 @@ namespace winproySerialPort
                 procesoVerificaSalida = new Thread(VerificandoSalida);
                 procesoVerificaSalida.Start();
                 //archivoEnvia = new ClassArchivoEnviando();
-                procesoEnvioArchivo = new Thread(Enviar);
-                procesoEnvioArchivo.Start();
+                
+                bAx = false;
             }
             catch (Exception e)
             {

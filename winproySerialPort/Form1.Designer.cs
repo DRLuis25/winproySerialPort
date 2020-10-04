@@ -52,13 +52,14 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.flpEnviando = new System.Windows.Forms.FlowLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label17 = new System.Windows.Forms.Label();
-            this.flpDescargando = new System.Windows.Forms.FlowLayoutPanel();
-            this.flpEnviando = new System.Windows.Forms.FlowLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.flpDescargando = new System.Windows.Forms.FlowLayoutPanel();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBaudRate)).BeginInit();
             this.grpParametros.SuspendLayout();
@@ -218,7 +219,7 @@
             // 
             this.btnSelectFile.Enabled = false;
             this.btnSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectFile.Location = new System.Drawing.Point(90, 200);
+            this.btnSelectFile.Location = new System.Drawing.Point(512, -2);
             this.btnSelectFile.Name = "btnSelectFile";
             this.btnSelectFile.Size = new System.Drawing.Size(158, 31);
             this.btnSelectFile.TabIndex = 15;
@@ -256,7 +257,7 @@
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.SalirToolStripMenuItem_Click);
             // 
@@ -288,7 +289,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.btnSelectFile);
             this.tabPage1.Controls.Add(this.grpParametros);
             this.tabPage1.Controls.Add(this.btnEnviar);
             this.tabPage1.Controls.Add(this.btnCerrarPuerto);
@@ -335,6 +335,25 @@
             this.tabPage3.Text = "Enviando";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Maven Pro", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(220, 150);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(305, 21);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Los archivos que envías apareceran aquí";
+            // 
+            // flpEnviando
+            // 
+            this.flpEnviando.AutoScroll = true;
+            this.flpEnviando.Location = new System.Drawing.Point(19, 40);
+            this.flpEnviando.Margin = new System.Windows.Forms.Padding(1);
+            this.flpEnviando.Name = "flpEnviando";
+            this.flpEnviando.Size = new System.Drawing.Size(700, 257);
+            this.flpEnviando.TabIndex = 11;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -358,44 +377,6 @@
             this.tabPage5.Text = "Descargando";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Maven Pro", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(15, 15);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(125, 21);
-            this.label17.TabIndex = 12;
-            this.label17.Text = "DESCARGANDO";
-            // 
-            // flpDescargando
-            // 
-            this.flpDescargando.AutoScroll = true;
-            this.flpDescargando.Location = new System.Drawing.Point(20, 40);
-            this.flpDescargando.Margin = new System.Windows.Forms.Padding(1);
-            this.flpDescargando.Name = "flpDescargando";
-            this.flpDescargando.Size = new System.Drawing.Size(700, 257);
-            this.flpDescargando.TabIndex = 13;
-            // 
-            // flpEnviando
-            // 
-            this.flpEnviando.AutoScroll = true;
-            this.flpEnviando.Location = new System.Drawing.Point(20, 40);
-            this.flpEnviando.Margin = new System.Windows.Forms.Padding(1);
-            this.flpEnviando.Name = "flpEnviando";
-            this.flpEnviando.Size = new System.Drawing.Size(700, 257);
-            this.flpEnviando.TabIndex = 11;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Maven Pro", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(220, 150);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(305, 21);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Los archivos que envías apareceran aquí";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -406,12 +387,42 @@
             this.label5.TabIndex = 14;
             this.label5.Text = "Los archivos que recibas apareceran aquí";
             // 
+            // flpDescargando
+            // 
+            this.flpDescargando.AutoScroll = true;
+            this.flpDescargando.Location = new System.Drawing.Point(20, 40);
+            this.flpDescargando.Margin = new System.Windows.Forms.Padding(1);
+            this.flpDescargando.Name = "flpDescargando";
+            this.flpDescargando.Size = new System.Drawing.Size(700, 257);
+            this.flpDescargando.TabIndex = 13;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Maven Pro", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(15, 15);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(125, 21);
+            this.label17.TabIndex = 12;
+            this.label17.Text = "DESCARGANDO";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(706, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(24, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "test";
+            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(762, 401);
+            this.Controls.Add(this.btnSelectFile);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
@@ -474,6 +485,7 @@
         private System.Windows.Forms.FlowLayoutPanel flpDescargando;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
 

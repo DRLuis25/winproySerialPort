@@ -13,11 +13,11 @@ namespace winproySerialPort
         Thread procesoEnvio;
         Thread procesoVerificaSalida;
         Thread procesoRecibirMensaje;
-
         //Mensaje
         private string mensajeEnviar;
         private string mensRecibido;
-
+        byte[] TramaEnvio;
+        byte[] TramaCabeceraEnvio;
         private void RecibiendoMensaje()
         {
             int LongMensRec;
@@ -30,7 +30,6 @@ namespace winproySerialPort
             }
             catch (Exception e)
             {
-
                 MessageBox.Show("Ha ocurrido un error al recibir un mensaje: " + e.Message);
             }
         }
@@ -48,12 +47,9 @@ namespace winproySerialPort
         }
         private void Enviando()
         {
-            lock (control)
-            {
-                puerto.Write(TramaCabeceraEnvio, 0, 5);
-                puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
-                puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);
-            }
+            puerto.Write(TramaCabeceraEnvio, 0, 5);
+            puerto.Write(TramaEnvio, 0, TramaEnvio.Length);
+            puerto.Write(TramaRelleno, 0, 1019 - TramaEnvio.Length);
         }
     }
 }

@@ -24,6 +24,11 @@ namespace winproySerialPort
         Thread procesoEnvioArchivo;
         Thread procesoConstruyeArchivo;
         private bool rarchivo;
+        void asdsa()
+        {
+            MessageBox.Show("a");
+        }
+
         public void IniciaEnvioArchivo(string path) //Para solo 1 file
         {
             //archivoEnviar
@@ -38,15 +43,17 @@ namespace winproySerialPort
                 archivoEnvia.Num = num;
                 num++;
                 archivoEnvia.Activo = true;
-                Thread t = new Thread(()=>EnviarNameyTam(archivoEnvia));
-                //EnviarNameyTam(archivoEnvia);         
+                Thread t = new Thread(()=>EnviarNameyTam(archivoEnvia));    
                 t.Start();
-                lock (contrl)
-                {
-                    Thread.Sleep(1000);
-                    OnInicioProceso(archivoEnvia.Num, archivoEnvia.Nombre, true);
+                
+                //lock (contrl)
+                //{
+                    Thread a = new Thread(() => inicio(archivoEnvia.Num, archivoEnvia.Nombre, true));
+                    a.Start();
+                    Thread tx = new Thread(asdsa);
+                    tx.Start();
                     listaEnviando.AddLast(archivoEnvia);
-                }
+                //}
                 //If(Llegó la cabecera){
                 //Agregar a la linkedlist el archivo a enviar
                 //} (Falta x'D)
@@ -62,21 +69,48 @@ namespace winproySerialPort
                 throw e;
             }
         }
+
+        private void inicio(int Num, string Nombre, bool ED)
+        {
+            OnInicioProceso(Num, Nombre, ED);
+        }
         private void EnviarNameyTam(ClassArchivoEnviando archivoEnviar)
         {
+            ENT = true;
             //Envia una trama mensaje que contiene el nombre del archivo a enviar y su tamaño
             byte[] TramaEnvioNameyTam;
             byte[] TramaCabeceraEnvioArchivo;
             string cabeceraArchivo = "C" + archivoEnviar.Nombre.Length.ToString("D4");
             TramaCabeceraEnvioArchivo = ASCIIEncoding.UTF8.GetBytes(cabeceraArchivo);
             TramaEnvioNameyTam = ASCIIEncoding.UTF8.GetBytes(archivoEnviar.Nombre + archivoEnviar.Tamaño.ToString("D19")+archivoEnviar.Num.ToString("D4"));
-            lock (control)
+            //while (bAx)
+            //{
+            //}
+            //if(procesoEnvioArchivo != null && procesoEnvioArchivo.ThreadState==ThreadState.Running && bAx)
+            //{
+            //    procesoEnvioArchivo.Suspend();
+            //    MessageBox.Show("suspendido");
+            //}
+            Random r = new Random();
+            int n = 2;
+            do
             {
-                puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
-                puerto.Write(TramaEnvioNameyTam, 0, TramaEnvioNameyTam.Length);
-                puerto.Write(TramaRelleno, 0, 1019 - TramaEnvioNameyTam.Length);
-            }
+                if (!BufferSalidaVacio)
+                    Thread.Sleep(r.Next(0, n));
+                n *= 2;
+            } while (!BufferSalidaVacio);
+            puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
+            puerto.Write(TramaEnvioNameyTam, 0, TramaEnvioNameyTam.Length);
+            puerto.Write(TramaRelleno, 0, 1019 - TramaEnvioNameyTam.Length);
+            //if(procesoEnvioArchivo != null && procesoEnvioArchivo.ThreadState==ThreadState.Suspended)
+            //    procesoEnvioArchivo.Resume();
             //MessageBox.Show("Name y tam enviado");
+            if (procesoEnvioArchivo ==null || procesoEnvioArchivo.ThreadState != ThreadState.Running)
+            {
+                procesoEnvioArchivo = new Thread(Enviar);
+                procesoEnvioArchivo.Start();
+            }
+            ENT = false;
         }
         
         private void InicioConstruirArchivo()
@@ -110,14 +144,12 @@ namespace winproySerialPort
                 {
                     listaRecibiendo.AddLast(archivoRecibir);
                     OnInicioProceso(archivoRecibir.Num, archivoRecibir.Nombre, false);
-
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show("ERROR!: No se ha podido crear el archivo: " + e.Message);
                 rarchivo = false;
-                //throw;
             }
         }
         private string ChangeFileName(string fullpath)

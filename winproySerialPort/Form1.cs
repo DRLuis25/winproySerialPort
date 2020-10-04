@@ -192,8 +192,16 @@ namespace winproySerialPort
         }
         private void ObjTrRX_proceso(long tam, long avance, int num, bool ED)
         {
-
-            Invoke(delegadoEnvio, tam, avance, num, ED);
+            try
+            {
+                Invoke(delegadoEnvio, tam, avance, num, ED);
+            }
+            catch (Exception)
+            {
+                //No se enviará el archivo
+                Environment.Exit(0);
+            }
+                
         }
         
         private void ObjTrRx_LlegoMensaje(object o, string mm)
@@ -253,6 +261,7 @@ namespace winproySerialPort
                 try
                 {
                     objTrRX.IniciaEnvioArchivo(ofdOpenFile.FileName);
+                    
                     MessageBox.Show("Enviando Archivo");
                     btnCerrarPuerto.Enabled = false;
                     //Añadir la progressbar

@@ -19,71 +19,84 @@ namespace winproySerialPort
 
         private void Enviar()
         {
-            while (puerto.IsOpen)
+            //MessageBox.Show("iniciado");
+            bool temp = true;
+            while (temp)
             {
                 lock (contrl)
                 {
-                    if(listaEnviando.Count>0)
+                    bAx = true;
+                    LinkedListNode<ClassArchivoEnviando> item = listaEnviando.First;
+                    while (item!=null)
                     {
-                        foreach (ClassArchivoEnviando item in listaEnviando)
+                        LinkedListNode<ClassArchivoEnviando> next = item.Next;
+                        if (item.Value.Activo)
                         {
-                            if (item.Activo)
-                            {
-                                EnviandoArchivo(item);
-                                Thread.Sleep(100);
-                            }
-                                
-                            //if (!item.Activo)
-                            //    listaEnviando.Remove(item);
+                            EnviandoArchivo(item.Value);
+                            Thread.Sleep(100);
                         }
+                        if (!item.Value.Activo)
+                            listaEnviando.Remove(item);
+                        item = next;
                     }
-                }  
+                    bAx = false;
+                }
+                if (listaEnviando.Count == 0)
+                    temp = false;
             }
+            //MessageBox.Show("Finalizado");
         }
         private void avance(long tam, long avance, int num, bool ED)
         {
             OnProcesoEnvio(tam, avance, num, ED);
         }
+        
         private void EnviandoArchivo(ClassArchivoEnviando archivoEnviar)
         {
             try
             {
                 //Envia las tramas de información
-                byte[] TramaEnvioArchivo = new byte[1019];
                 byte[] TramaCabeceraEnvioArchivo = new byte[5];
+                byte[] TramaEnvioArchivo = new byte[1019];
                 //Se deberia esperar la confirmación para enviar el archivo(En la final será, idk)
                 TramaCabeceraEnvioArchivo = ASCIIEncoding.UTF8.GetBytes("I" + archivoEnviar.Num.ToString("D4"));
                 //MessageBox.Show("TramaCabeceraEnvioArchivo: " + "I" + archivoEnviar.Num.ToString("D4"));
-                
                 if (archivoEnviar.Avance <= (archivoEnviar.Tamaño - 1019))
                 {
                     archivoEnviar.LeyendoArchivo.Read(TramaEnvioArchivo, 0, 1019);
                     archivoEnviar.Avance += 1019;
-                    lock (control)
-                    {
-                        //Random r = new Random();
-                        //do
-                        //{
-                        //    if (!BufferSalidaVacio)
-                        //        Thread.Sleep(r.Next(0, 1000));
-                        //} while (!BufferSalidaVacio);
-                        puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
-                        puerto.Write(TramaEnvioArchivo, 0, 1019);
-                        Thread a = new Thread(()=> avance(archivoEnviar.Tamaño, archivoEnviar.Avance, archivoEnviar.Num, true));
-                        a.Start();
-                    }
+                    //lock (control)
+                    //{
+                        Random r = new Random();
+                        do
+                        {
+                            if (!BufferSalidaVacio)
+                                Thread.Sleep(r.Next(0, 1000));
+                        } while (!BufferSalidaVacio || ENT);
+                    //MessageBox.Show("a");
+                    puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
+                    puerto.Write(TramaEnvioArchivo, 0, 1019);
+                    Thread a = new Thread(()=> avance(archivoEnviar.Tamaño, archivoEnviar.Avance, archivoEnviar.Num, true));
+                    a.Start();
+                    //}
                 }
                 else
                 {
                     int tamanito = Convert.ToInt16(archivoEnviar.Tamaño - archivoEnviar.Avance);
                     archivoEnviar.LeyendoArchivo.Read(TramaEnvioArchivo, 0, tamanito);
                     //Envío de lo que queda del archivo + un relleno
-                    lock (control)
-                    {
+                    //lock (control)
+                    //{
+                        Random r = new Random();
+                        do
+                        {
+                            if (!BufferSalidaVacio)
+                                Thread.Sleep(r.Next(0, 1000));
+                        } while (!BufferSalidaVacio || ENT);
                         puerto.Write(TramaCabeceraEnvioArchivo, 0, 5);
                         puerto.Write(TramaEnvioArchivo, 0, tamanito);
                         puerto.Write(TramaRelleno, 0, 1019 - tamanito);
-                    }
+                    //}
                     //Cerrar el flujo
                     archivoEnviar.Avance = archivoEnviar.Tamaño;
                     archivoEnviar.Activo = false;
