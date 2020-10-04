@@ -37,21 +37,32 @@ namespace winproySerialPort
         public void Enviar(string mens)
         {
             mensajeEnviar = mens;
-            int l = mensajeEnviar.Length;
+            TramaEnvio = ASCIIEncoding.UTF8.GetBytes(mensajeEnviar);
+            int l = TramaEnvio.Length;
             //Añadir ceros a la izq
             string LongitudMensaje = "M" + l.ToString("D4");
-            TramaEnvio = ASCIIEncoding.UTF8.GetBytes(mensajeEnviar);
             TramaCabeceraEnvio = ASCIIEncoding.UTF8.GetBytes(LongitudMensaje);
             procesoEnvio = new Thread(Enviando);
             procesoEnvio.Start();
         }
+        //public void Enviar(string mens)
+        //{
+        //    mensajeEnviar = mens;
+        //    int l = mensajeEnviar.Length;
+        //    //Añadir ceros a la izq
+        //    string LongitudMensaje = "M" + l.ToString("D4");
+        //    TramaEnvio = ASCIIEncoding.UTF8.GetBytes(mensajeEnviar);
+        //    TramaCabeceraEnvio = ASCIIEncoding.UTF8.GetBytes(LongitudMensaje);
+        //    procesoEnvio = new Thread(Enviando);
+        //    procesoEnvio.Start();
+        //}
         private void Enviando()
         {
             Random r = new Random();
             do
             {
                 if (!BufferSalidaVacio)
-                    Thread.Sleep(r.Next(0, 1000));
+                    Thread.Sleep(r.Next(0, 100));
             } while (!BufferSalidaVacio || ENT);
             puerto.Write(TramaCabeceraEnvio, 0, 5);
             puerto.Write(TramaEnvio, 0, TramaEnvio.Length);

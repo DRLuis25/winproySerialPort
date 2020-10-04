@@ -6,6 +6,7 @@ using System.Threading;
 using System.Configuration;
 using System.Collections.Generic;
 using System.CodeDom;
+using System.Globalization;
 
 namespace winproySerialPort
 {
@@ -31,7 +32,7 @@ namespace winproySerialPort
             {
                 archivoEnvia.FlujoArchivoEnviar = new FileStream(path, FileMode.Open, FileAccess.Read);
                 archivoEnvia.LeyendoArchivo = new BinaryReader(archivoEnvia.FlujoArchivoEnviar);
-                archivoEnvia.Nombre = Path.GetFileName(path);
+                archivoEnvia.Nombre = c(Path.GetFileName(path));
                 archivoEnvia.Tamaño = archivoEnvia.FlujoArchivoEnviar.Length;
                 archivoEnvia.Avance = 0;
                 archivoEnvia.Num = num;
@@ -46,7 +47,6 @@ namespace winproySerialPort
             catch (Exception e)
             {
                 MessageBox.Show("Excepción Inicia envío archivo" + e.Message);
-                throw e;
             }
         }
         private void inicio(int Num, string Nombre, bool ED)
@@ -59,9 +59,10 @@ namespace winproySerialPort
             //Envia una trama mensaje que contiene el nombre del archivo a enviar y su tamaño
             byte[] TramaEnvioNameyTam;
             byte[] TramaCabeceraEnvioArchivo;
-            string cabeceraArchivo = "C" + archivoEnviar.Nombre.Length.ToString("D4");
+            byte[] temp = ASCIIEncoding.UTF8.GetBytes(archivoEnviar.Nombre);
+            TramaEnvioNameyTam = ASCIIEncoding.UTF8.GetBytes(archivoEnviar.Nombre + archivoEnviar.Tamaño.ToString("D19") + archivoEnviar.Num.ToString("D4"));
+            string cabeceraArchivo = "C" + temp.Length.ToString("D4");
             TramaCabeceraEnvioArchivo = ASCIIEncoding.UTF8.GetBytes(cabeceraArchivo);
-            TramaEnvioNameyTam = ASCIIEncoding.UTF8.GetBytes(archivoEnviar.Nombre + archivoEnviar.Tamaño.ToString("D19")+archivoEnviar.Num.ToString("D4"));
             Random r = new Random();
             int n = 2;
             do
@@ -179,6 +180,17 @@ namespace winproySerialPort
                     }
                 }
             }                                                                                                                                                                               } 
+        }
+        public string c(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.ToString();
         }
     }
 }
